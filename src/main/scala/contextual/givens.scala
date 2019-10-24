@@ -79,7 +79,8 @@ object BoringMain
   lazy val someTask = 
     for
       given log: Logger <- Some(logger)
-      given ex: Executor[Int] <- Some(executor)
+      given pretty: Printer.Printable[String] <- Some(Instances.pretty)
+      _ <- Some(summon[Executor[String]].trace)
     yield
-      Instances.pretty match
+      pretty match
         case given _: Printer.Printable[String] => Task("some task").unsafeRunSync[F = String]("[String]")
