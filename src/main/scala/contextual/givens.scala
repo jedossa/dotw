@@ -61,7 +61,8 @@ object BoringMain
     import Instances.{sName, given} // is ok
     import Instances.{given, sName} // not ok: named imports cannot follow wildcard imports
   */
-  lazy val boringTask = Task("task").unsafeRunSync[Int]("fascinating") // but I want a String printer
+  lazy val boringTask = Task("task").unsafeRunSync[F = Int]("fascinating") // but I want a String printer
+
   /*
     for passing all parameters explicitly you have to especify what parameters are given
   */
@@ -69,6 +70,16 @@ object BoringMain
   val logger: Logger = summon[Logger]
   val printer: Printer.Printable[Int] = summon[Printer.Printable[?]]
   lazy val anotherTask = 
-    Task("another task").unsafeRunSync[F = Int]("fascinating")(given logger)(given executor, printer)
+    Task("another task").unsafeRunSync[F = Int]("just")(given logger)(given executor, printer)
 
-
+  /*
+    given bindings are allowed anywhere a pattern is allowed: given _: T, given t: T
+    nested given instances are significant for local coherence
+  */
+  lazy val someTask = 
+    for
+      given log: Logger <- Some(logger)
+      given ex: Executor[Int] <- Some(executor)
+    yield
+      Instances.pretty match
+        case given _: Printer.Printable[String] => Task("some task").unsafeRunSync[F = String]("[String]")
