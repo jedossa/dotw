@@ -24,3 +24,5 @@ sbt launchIDE
 ### More information
 
 See http://dotty.epfl.ch/docs/usage/getting-started.html
+
+It is recommended to set `edtitor.autoSeave = on` in Preferences (`Ctrl+,`)

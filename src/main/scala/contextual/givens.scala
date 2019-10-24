@@ -51,6 +51,12 @@ object Instances
     given executor[T]: Executor[T] = new Executor[T] {}
     given logger: Logger
     given logger: Logger = new Logger {}
+    
+    In general:
+    given Int = 10  // Anonymous
+    given x: String = "foo"  // Named
+    given f(given x: Int): Option[Int] = Some(x * x)  // With given parameters
+    given [T](given opt: Option[T]): List[T] = opt.toList  // Anonymous with type parameters
   */
 object BoringMain
   import Instances.{given Executor[?], given Logger, given Printer.Printable[Int]} // By-type imports
