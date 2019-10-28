@@ -31,7 +31,9 @@ https://scastie.scala-lang.org/?target=dotty
 - [dotty example project](https://github.com/lampepfl/dotty-example-project)
 - [porting an existing project](https://github.com/lampepfl/dotty-example-project#getting-your-project-to-compile-with-dotty)
 
-#### It is recommended to set `edtitor.autoSeave = on` in Preferences (`Ctrl+,`)
+**It is recommended to set `edtitor.autoSeave = on` in Preferences (`Ctrl+,`)**
+
+---
 
 ### TODO
 - Add more tests and examples.
@@ -40,8 +42,10 @@ https://scastie.scala-lang.org/?target=dotty
 - Add a `Shapeless 3` example
 - Fix typos and improve comments explanations
 - Add links to other Dotty example projects
-- Try upgrading dotty version for Cats PoC: (spotted-leopards)[https://github.com/typelevel/spotted-leopards], (dotty-experiments)[https://github.com/travisbrown/dotty-experiments]
+- Try upgrading dotty version for Cats PoC: [spotted-leopards](https://github.com/typelevel/spotted-leopards), [dotty-experiments](https://github.com/travisbrown/dotty-experiments])
 - Explore [`macros`](https://dotty.epfl.ch/docs/reference/metaprogramming/macros.html)
 - etc. (add yours)
 
-#### PRs are :green_heart:
+---
+
+**PRs are :green_heart:**
