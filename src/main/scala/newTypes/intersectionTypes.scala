@@ -13,7 +13,7 @@ trait Awesomeness
   here the motivation parameter would be equivalent to:
   trait Motivation extends Energy with Time
 */
-def doFloos(motivation: Energy & Time): Awesomeness =  //top level def
+def doFloos(motivation: Energy & Time): Awesomeness =  // top level def
   def createPR = ???
   def getSomeRest = ???
   if (motivation.hasToSpare && motivation.getLevel > 0) createPR

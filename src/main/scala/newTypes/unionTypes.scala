@@ -54,3 +54,5 @@ end Currency
 type Vowel = "a" | "e" | "i" | "o" | "u" // literal type
 type Digit = 1 | 2  | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0
 class Basic(v: Vowel, d: Digit) // Basic("a", 0) no boxing overhead, also `new` is optional 
+
+// implement `Either` as a union type and use it for creating a safe division fucntion

@@ -36,6 +36,7 @@ object Monoid
     See https://github.com/travisbrown/dotty-experiments/blob/master/dotty-cats/kernel/src/main/scala/io/circe/cats/kernel/Monoid.scala
     For high level derivation see Shapeless 3 
     https://github.com/milessabin/shapeless/blob/shapeless-3/core/src/test/scala/shapeless/type-classes.scala#L48
+    https://portal.klewel.com/watch/webcast/scala-days-2019/talk/20/
   */
   inline def derived[T] (given mirror: Mirror.Of[T]): Monoid[T] =
     new Monoid[T] {
@@ -84,4 +85,5 @@ object Monoid
         *: summonCombine[ts, A](x, y, idx + 1)
       case _: Unit => ()
 
+// Create a derived method for `Show` type class (https://typelevel.org/cats/typeclasses/show.html)
 end Monoid

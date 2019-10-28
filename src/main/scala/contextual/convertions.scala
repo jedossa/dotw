@@ -2,9 +2,9 @@ package contextual
 
 import scala.language.implicitConversions
 /*
-  Implicit conversions are gone for good
+  Implicit conversions are gone for good.
 
-  Now implicit conversions are defined by given instances of the scala.Conversion class
+  Now implicit conversions are defined by given instances of the scala.Conversion class:
 
   abstract class Conversion[-T, +U] extends (T => U)
 */
@@ -13,7 +13,7 @@ object Conversions
   object Celcius
     def apply(d: Double): Celcius = d
     given Conversion[Celcius, Fahrenheit] = c => (c * (9.0/5.0)) + 32
-    given ops: {
+    given celciusOps: {
       def (c: Celcius) toF (given Conversion[Celcius, Fahrenheit]): Fahrenheit = summon[Conversion[?,?]](c)
     }
 
@@ -21,7 +21,7 @@ object Conversions
   object Fahrenheit
     def apply(d: Double): Fahrenheit = d
     given Conversion[Fahrenheit, Celcius] = f => (f - 32) * (5.0/9.0)
-    given ops: {
+    given fahrenheitOps: {
       def (f: Fahrenheit) toC (given to: Conversion[Fahrenheit, Celcius]): Celcius = to(f)
     }
 

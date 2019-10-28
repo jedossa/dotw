@@ -29,7 +29,9 @@ object Sum
   val sumZero = Sum[0, 0] //what's the type ?
 
   /* 
-    define a type-level sum
+    // define a type-level sum
     implicit def +[A <: Int, B <: Int]
+    // a sample implementacion in Scala 2:
+    // https://github.com/jedossa/fp-lab/blob/develop/src/main/scala/types/Numbers.scala
   */
 end Sum
