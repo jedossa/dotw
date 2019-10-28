@@ -13,7 +13,6 @@ class ExtractorsTest
     def unapply(i: Int): Boolean = i % 2 == 0
 
   @Test def booleanMatch: Unit =
-
     def isEven: Int => Boolean =
       case e @ Even() => e % 2 == 0
       case _ => false
@@ -48,10 +47,15 @@ class ExtractorsTest
 
   @Test def sequenceMatch: Unit =
     object Sequence
-      def unapplySeq(s: String): Option[List[Char]] = Some(s.toList)
+      def unapplySeq(fullName: String): Option[List[String]] =
+        val names = fullName.split(" ")
+        if (names.size < 2) None
+        else Some(names.head :: names.last :: names.drop(1).dropRight(1).toList)
     
-    "something" match
-      case Sequence(a, b, c, d, _, _, _, _, _) => assertEquals("some", s"$a$b$c$d")
+    "Daenerys Stormborn of the House Targaryen" match
+      case Sequence(firstName, lastName, titles : _*) =>
+        assertEquals("Daenerys Targaryen", s"$firstName $lastName")
+        assertEquals("Stormborn of the House", titles.mkString(" "))
       case _ => assert(false)
 
   @Test def productSequenceMatch: Unit =

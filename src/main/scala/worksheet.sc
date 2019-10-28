@@ -18,3 +18,9 @@ val res = for
 yield res
 
 println(res)
+
+import scala.deriving.Mirror
+
+case class Repr[T](first: String, second: Int, third: T)
+
+val mirror = summon[Mirror{ type MirroredType = Repr[Option[Int]] }]

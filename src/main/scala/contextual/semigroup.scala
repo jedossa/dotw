@@ -9,10 +9,13 @@ import scala.annotation.alpha
 */
 trait Semigroup[T]
   @alpha("combine") def (x: T) |+| (y: T): T // generic extension, extends type parameter T
+
 object Semigroup
   def apply[T](given Semigroup[T]): Semigroup[T] = summon[Semigroup[T]] // summoner
+
+  //instances
   given [T](given Numeric[T]): Semigroup[T] // given [T: Numeric]
-    @alpha("combine") def (x: T) |+| (y: T): T = summon[Numeric[T]].plus(x, y) // instance
+    @alpha("combine") def (x: T) |+| (y: T): T = summon[Numeric[T]].plus(x, y)
   given Semigroup[String]
     @alpha("combine") def (x: String) |+| (y: String): String = s"$x $y"
   given [T: Semigroup]: Semigroup[Option[T]]
