@@ -3,16 +3,16 @@ package newTypes
 /*
   A dependent function type describes functions where the result type may depend on the function's parameter values.
 */
-trait Sum[A <: Int, B <: Int]
+trait Sum[A <: Int, B <: Int]:
   type R <: Int
 
-object Sum
+object Sum:
   /*
     Equivalent to dependent method
       def apply[A <: Int, B <: Int](given sum: Sum[A, B]): Aux[A, B, sum.R] = sum
     In scala 2 dependent methods could not be turned into functions
   */
-  def apply[A <: Int, B <: Int]: (given sum: Sum[A, B]) => Aux[A, B, sum.R] = summon[Sum[A, B]]
+  def apply[A <: Int, B <: Int](using sum: Sum[A, B]): Aux[A, B, sum.R] = summon[Sum[A, B]]
   
   /*
     desugaring
@@ -23,8 +23,8 @@ object Sum
 
   type Aux[A <: Int, B <: Int, C <: Int] = Sum[A, B] { type R = C }
   
-  given [B <: Int]: Sum[Zero, B] { type R = B }
-  //or: implicit def zero[B <: Int]: Aux[Zero, B, B] = new Sum[Zero, B] { type R = B }
+  given Sum[Zero, Zero]
+  // given Sum[Zero, Zero] { type R = Zero }
   
   val sumZero = Sum[0, 0] //what's the type ?
 

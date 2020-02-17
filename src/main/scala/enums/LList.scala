@@ -5,7 +5,7 @@ package enums
 import scala.compiletime.S // type S[X <: Int] <: Int, sounds familiar ?
 // More at https://dotty.epfl.ch/docs/reference/metaprogramming/inline.html#the-scalacompiletime-package
 
-enum LList[+T, L <: Int]
+enum LList[+T, L <: Int]:
   case LNil extends LList[Nothing, 0]
   case LCons[+T, L <: Int](head: T, tail: LList[T, L]) extends LList[T, S[L]]
 

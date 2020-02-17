@@ -4,20 +4,20 @@ import Currency._
 /*
 A union type A | B has as values all values of type A and also all values of type B.
 */
-trait Currency(symbol: Symbol) // trait parameter
+trait Currency(symbol: Symbol): // trait parameter
   def name: String
   def getSymbol: Symbol = symbol
-case object USD extends Currency("$".toSymbol)
-  def name: String = "Dolar"
-case object EUR extends Currency("€".toSymbol)
+case object USD extends Currency("$".toSymbol):
+  def name: String = "Dollar"
+case object EUR extends Currency("€".toSymbol):
   def name: String = "Euro"
-case object JPY extends Currency("¥".toSymbol)
+case object JPY extends Currency("¥".toSymbol):
   def name: String = "Yen"
 
-object Currency
+object Currency:
   def (s: String) toSymbol: Symbol = Symbol(s) // extension method
   opaque type Symbol = String
-  object Symbol
+  object Symbol:
     def apply(symbol: String): Symbol = symbol
 
   type USD = USD.type

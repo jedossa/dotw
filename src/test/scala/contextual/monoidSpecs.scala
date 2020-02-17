@@ -1,9 +1,9 @@
 package contextual
 
 import org.junit.Test
-import org.junit.Assert.assertEquals
+import org.junit.Assert.{assertEquals, assertTrue}
 
-class MonoidTest
+class MonoidTest:
 
   @Test def derivation: Unit =
     
@@ -13,4 +13,4 @@ class MonoidTest
     val expected = LLC("AB", 20)
 
     assertEquals(fusion.name, expected.name)
-    assertEquals(fusion.net, expected.net)
+    assertTrue(fusion.net == expected.net)

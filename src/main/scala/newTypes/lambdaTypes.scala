@@ -9,7 +9,7 @@ type ID[A] = A //expands to: `type ID = [A] =>> A`
 type T2 = [X] =>> (X, X) // `type T2[X] = (X, X)`
 type Eff[F[?]] = MError[F, Throwable] // make it a plain type defition
 
-trait Effect
+trait Effect:
   def unsafeRunR[F[?]: Eff]: Unit
   def unsafeRunL[F[?]: [L[?]] =>> MError[L, Exception]]: Unit // using an anonymous type parameter
   // coming soon: MError[_[?], Exception]

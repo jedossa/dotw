@@ -3,36 +3,36 @@ package contextual
 /*
   given replaces implicit: show intent instead of mechanism
 */
-object Printer
+object Printer:
   opaque type Printable = [T] =>> String
-  object Printable
+  object Printable:
     def apply[T]: T => Printable[T] = _.toString
-    given printOps: { // public extension methods for opaque type
-      def (p: Printable[T]) prettyPrint[T]: Unit = println(p)
+    extension printOps on (p: Printable[T]) { // public extension methods for opaque type
+      def prettyPrint[T]: Unit = println(p)
     }
 
-trait Executor[T]
+trait Executor[T]:
   export Printer.Printable // export creates an alias for an object selected member
   // final type PrintableType = Printer.Printable
-  def trace: (given Printable[T]) => Unit = summon[Printable[T]].prettyPrint // def summon[T](given x: T): x.type = x
-  // trace is an implicit fucntion type
+  def trace: Printable[T] ?=> Unit = summon[Printable[T]].prettyPrint // def summon[T](using x: T): x.type = x
+  // trace is a context function type (?=>)
 
-trait Logger
+trait Logger:
   def log: String => Unit = println(_)
 
-class Task[T](value: T)
+class Task[T](value: T):
   export Printer.{Printable => Pretty}
-  def unsafeRunSync[F: Executor](name: String)(given logger: Logger)(given Pretty[F]): Unit = // naming this is difficult
+  def unsafeRunSync[F: Executor](name: String)(using logger: Logger)(using Pretty[F]): Unit = // naming this is difficult
     logger.log(s"$name $value is running!")
-    summon[Executor[F]].trace // hot to pass a Printable explicitly ?
+    summon[Executor[F]].trace // how to pass a Printable explicitly ?
   /*
     Context bounds expands to
     def unsafeRunSync[T](name: String)
-      (given logger: contextual.Logger)
+      (using logger: contextual.Logger)
         (implicit evidence$2: contextual.Executor[F], x$3: Task.this.Pretty[F]): Unit
   */
 
-object Instances
+object Instances:
   val sName = "Thread-0"
   val bName = 110_000
   /*
@@ -42,9 +42,9 @@ object Instances
     if given definition has type parameters, an instance is create for each reference
       as for Executor[T] for each T
   */
-  given pretty: Printer.Printable[String] = Printer.Printable[String](sName) // given alias, only one type
-  given [T <: Int]: Printer.Printable[Int] = Printer.Printable[Int](bName) // can be anonymous
-  given [T]: Executor[T], Logger // anonymous given instances, compiler will synthesize a name
+  given pretty as Printer.Printable[String] = Printer.Printable[String](sName) // given alias, only one type
+  given [T <: Int] as Printer.Printable[Int] = Printer.Printable[Int](bName) // can be anonymous
+  given [T] as Executor[T], Logger // anonymous given instances, compiler will synthesize a name
   /*
     If you're not that lazy and got cool names, you can write things as follows:
     given executor[T]: Executor[T]
@@ -58,7 +58,7 @@ object Instances
     given f(given x: Int): Option[Int] = Some(x * x)  // With given parameters
     given [T](given opt: Option[T]): List[T] = opt.toList  // Anonymous with type parameters
   */
-object BoringMain
+object BoringMain:
   import Instances.{given Executor[?], given Logger, given Printer.Printable[Int]} // By-type imports
   /* 
     import Instances.given // will import all givens
@@ -76,7 +76,7 @@ object BoringMain
   val logger: Logger = summon[Logger]
   val printer: Printer.Printable[Int] = summon[Printer.Printable[?]]
   lazy val anotherTask = 
-    Task("another task").unsafeRunSync[F = Int]("just")(given logger)(given executor, printer)
+    Task("another task").unsafeRunSync[F = Int]("just")(using logger)(using executor, printer)
 
   /*
     given bindings are allowed anywhere a pattern is allowed: given _: T, given t: T
@@ -90,3 +90,4 @@ object BoringMain
     yield
       pretty match
         case given _: Printer.Printable[String] => Task("some task").unsafeRunSync[F = String]("[String]")
+end BoringMain

@@ -3,9 +3,9 @@ package newTypes
 /*
   The type A & B represents values that are of the type A and B at the same time
 */
-trait Energy
+trait Energy:
   def getLevel: Int
-trait Time
+trait Time:
   def hasToSpare: Boolean
 trait Awesomeness
 
@@ -23,12 +23,12 @@ def doFloos(motivation: Energy & Time): Awesomeness =  // top level def
   If a member appears in both A and B, 
   its type in A & B is the intersection of its type in A and its type in B
 */
-trait X
+trait X:
   def replicas: List[X]
-trait Y
+trait Y:
   def replicas: List[Y]
 
-class Z extends X with Y
+class Z extends X with Y:
   def replicas = List.empty //what's the type ?
 
 /*

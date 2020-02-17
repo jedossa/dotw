@@ -6,27 +6,28 @@ import scala.collection.GenSeq
 import scala.compiletime.{erasedValue, error, summonFrom}
 import scala.deriving.{Mirror, productElement}
 
-trait Monoid[T] extends Semigroup[T]
+trait Monoid[T] extends Semigroup[T]:
   def empty: T
 
-object Monoid
-  def apply[T](given Monoid[T]): Monoid[T] = summon[Monoid[T]]
+object Monoid:
+  def apply[T](using Monoid[T]): Monoid[T] = summon[Monoid[T]]
 
   //syntax
-  given [T: GenSeq]: {
-    def (as: GenSeq[A]) foldMap[A, B] (f: A => B)(given Monoid[B]): B = ???
-    def (ts: GenSeq[T]) combineAll[T] (given Monoid[T]): T = ??? // List(1, 2, 3).combineAll = 6
+  extension on [T, A](ts: GenSeq[T]) {
+    def foldMap(f: T => A)(using Monoid[A]): A = ???
+    def combineAll(using Monoid[T]): T = ??? // List(1, 2, 3).combineAll = 6
   }
 
   // instances
-  given Monoid[String]
+  given Monoid[String] {
     val empty: String = ""
     @alpha("combine") def (x: String) |+| (y: String): String = x + y
+  }
 
-  given Monoid[Int]
+  given Monoid[Int]:
     val empty: Int = 0
     @alpha("combine") def (x: Int) |+| (y: Int): Int = x + y
-  
+
   /*
     Create instances for numbers, sequences, options and endofunctions (A => A)
   */  
@@ -38,7 +39,7 @@ object Monoid
     https://github.com/milessabin/shapeless/blob/shapeless-3/core/src/test/scala/shapeless/type-classes.scala#L48
     https://portal.klewel.com/watch/webcast/scala-days-2019/talk/20/
   */
-  inline def derived[T] (given mirror: Mirror.Of[T]): Monoid[T] =
+  inline given derived[T] (using mirror: Mirror.Of[T]) as Monoid[T] =
     new Monoid[T] {
       val empty: T =
         inline mirror match

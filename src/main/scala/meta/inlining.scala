@@ -11,7 +11,7 @@ package meta
   More at http://slides.com/nicolasstucki/scala-days-2019
 */
 
-object Logger
+object Logger:
   // constant value with a constant expression, here `inline` is equivalent to `final`
   inline val name: String = "SimpleLogger"
 
@@ -27,7 +27,7 @@ object Logger
 
 end Logger
 
-object Pow
+object Pow:
   /*
     Inline methods can be recursive.
     Power will be implemented by straight inline code without any loop or recursion.

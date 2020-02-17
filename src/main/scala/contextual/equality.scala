@@ -14,12 +14,12 @@ import scala.language.strictEquality
 class A(i: Int) derives Eql // generates a Eql instance in A's companion object
 /*
 object A
-  given [T](given Eql[Int, T]): Eql[A[Int], A[T]] = Eql.derived
+  given [T](given Eql[Int, T]) as Eql[A[Int], A[T]] = Eql.derived
 */
 
 class B(s: String)
-object B
-  given [T]: Eql[B, T] = Eql.derived 
+object B:
+  given [T] as Eql[B, T] = Eql.derived 
 /* 
   Eql is a binary typeclass to indicate two types can be compare to one another
   By default, all numbers are comparable, because of:
@@ -30,7 +30,7 @@ object B
   implicit def eqlSeq[T, U](implicit eq: Eql[T, U]): Eql[GenSeq[T], GenSeq[U]] = derived
   List(1, 2) == Vector(1, 2)
 */
-object Compare
+object Compare:
   export B.{given Eql}
 
   given Eql[Int, String] = Eql.derived
